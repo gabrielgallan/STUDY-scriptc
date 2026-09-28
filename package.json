@@ -1,0 +1,19 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch src/main.ts",
+    "build": "set SCRIPTC_CC=zigcc&& set SCRIPTC_TARGET=x86_64-windows-gnu&& scriptc build src/main.ts --dynamic -o dist/main.exe",
+    "build:coverage": "scriptc coverage src/main.ts --dynamic",
+    "start": "cd dist && main.exe"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  }
+}
