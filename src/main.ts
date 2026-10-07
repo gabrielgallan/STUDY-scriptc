@@ -1,11 +1,19 @@
 import { api } from "./server/api.js";
+import { Logger } from "./server/common/logger/logger.js";
+import { EnvService } from "./server/env/env.service.js";
 
-const port = 9090
+function bootstrap() {
+  const logger = new Logger('Core')
+  const env = new EnvService().get()
 
-try {
-  api.listen(port)
+  try {
+    api.listen(env.PORT)
 
-  console.log(`HTTP server running on http://localhost:${port}`)
-} catch (error) {
-  console.error(`[ERROR] Error starting server: ${error}`)
+    logger.info('Service started successfully')
+  } catch (error) {
+    logger.error(`Error starting service: ${error}`)
+
+    process.exit(1)
+  }
 }
+bootstrap()

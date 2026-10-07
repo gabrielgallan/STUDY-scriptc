@@ -1,14 +1,13 @@
-import { HttpServer } from "./http-server.js";
+import { HealthController } from "./health/health.controller.js";
+import { HttpService } from "./http/http.service.js";
+import { UsersController } from "./users/users.controller.js";
 
-const api = new HttpServer()
+const api = new HttpService()
 
-api.get('/health', () => {
-    return {
-      success: true,
-      timestamp: Date.now(),
-      uptime: process.uptime(),
-      version: process.env.npm_package_version || '1.0.0',
-    }
-})
+const healthController = new HealthController()
+const usersController = new UsersController()
+
+api.get('/api/health', healthController.get)
+api.get('/api/users', usersController.get)
 
 export { api }

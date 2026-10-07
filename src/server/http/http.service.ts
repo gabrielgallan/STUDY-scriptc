@@ -1,4 +1,5 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http'
+import { Logger } from '../common/logger/logger.js'
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -15,7 +16,8 @@ interface Route {
   handler: RouteHandler
 }
 
-export class HttpServer {
+export class HttpService {
+  private logger = new Logger('HttpService')
   private routes: Route[] = []
 
   get(path: string, handler: RouteHandler) {
@@ -39,7 +41,7 @@ export class HttpServer {
       try {
         await this.handleRequest(req, res)
       } catch (error) {
-        console.error(error)
+        this.logger.error(String(error))
 
         this.json(res, 500, {
           error: 'Internal server error',
@@ -48,7 +50,7 @@ export class HttpServer {
     })
 
     server.listen(port, host, () => {
-      console.log(`Server running on http://${host}:${port}`)
+      this.logger.info(`Server running on port ${port}`)
     })
 
     return server
